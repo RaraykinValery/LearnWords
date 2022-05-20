@@ -1,0 +1,1 @@
+{"good": "хорошо", "world": "мир", "sound": "звук", "I'm out on a limb": "Я на грани", "inferiority comlex": "комплекс неполноценности", "delusion": "заблуждение, иллюзия, наваждение", "supersititous": "суеверный", "embrace it": "прими это", "brag": "хвастаться", "generous": "щедрый", "adjudication": "судебное решение"}

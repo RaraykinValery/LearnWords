@@ -1,13 +1,13 @@
+#!/usr/bin/env python3.10
 import json
 import random
 import os
+
 
 class Training_dictionary:
     def __init__(self):
         self.dictionary = self.read_dict()
         self.right_answers = self.read_right_answers()
-        self.yes = ["Y", "y", "yes", "YES", "Yes", "YEs", "yeS", "yES", "yEs"]
-        self.no = ["N", "n", "not", "NOT", "Not", "NOt", "noT", "nOT", "nOt", "no", "NO"]
 
     def read_right_answers(self):
         file = open('right_answers.txt', 'r')
@@ -55,9 +55,9 @@ class Training_dictionary:
         self.dictionary[word] = meaning
         self.save()
         else_word_answer = self.ask_answer("Your word saved! Another word? [y/n]")
-        if else_word_answer in self.yes:
+        if else_word_answer.lower() == "yes":
             self.add_word()
-        elif else_word_answer in self.no:
+        elif else_word_answer.lower() == "no":
             print("Coming back to menu")
             self.menu()
 
@@ -70,12 +70,12 @@ class Training_dictionary:
         input("To show answer press ENTER")
         print(self.dictionary[choice])
         rightness_answer = self.ask_answer("Was your answer right? [y/n]")
-        if rightness_answer in self.yes:
+        if rightness_answer.lower() in "yes":
             self.right_answers.append(choice)
             with open('right_answers.txt', 'a') as ra:
                 ra.write(choice + '\n')
             self.learn()
-        elif rightness_answer in self.no:
+        elif rightness_answer.lower() == "no":
             self.learn()
 
     def ask_answer(self, question):
@@ -83,7 +83,7 @@ class Training_dictionary:
         return answer
 
     def read_dict(self):
-        train_dictionary_r = open("train_dictionary.txt", "r") #нужен относительный расположению скрипта путь
+        train_dictionary_r = open("train_dictionary.txt", "r") # нужен относительный расположению скрипта путь
         train_dictionary_json = train_dictionary_r.readline()
         train_dictionary = json.loads(train_dictionary_json)
         train_dictionary_r.close()

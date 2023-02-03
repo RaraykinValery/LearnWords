@@ -1,8 +1,9 @@
 #!/usr/bin/env python3.10
+import argparse
 import json
 import random
+import sqlite3
 from pathlib import Path
-import argparse
 
 
 def main():
@@ -13,7 +14,7 @@ def main():
     parser.set_defaults(func=greetings)
 
     parser_add = subparsers.add_parser("add")
-    parser_add.add_argument("word", type=str)
+    parser_add.add_argument("text", type=str)
     parser_add.add_argument("translation", type=str)
     parser_add.set_defaults(func=add)
 
@@ -25,7 +26,14 @@ def main():
 
 
 def add(args):
-    print(f"Adding {args.word} with translation {args.translation}")
+    connection = sqlite3.connect("dictionary.sqlite3")
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO dictionary (primary_text, translation) VALUES(?, ?)",
+        [args.text, args.translation],
+    )
+    connection.commit()
+    print(f"Translation is added!")
 
 
 def learn(args):
@@ -33,112 +41,7 @@ def learn(args):
 
 
 def greetings(args):
-    print("WELCOME to LearnWords!\n"
-          "To read help use -h or --help options\n"
-          "Good luck!"
-          )
-
-
-# def main_():
-# if not Path("train_dictionary.txt").exists():
-# with open("train_dictionary.txt", "w") as td:
-# td.write("{}")
-
-
-# def read_right_answers():
-# file = open("right_answers.txt", "r")
-# right_answers = []
-# for word in file:
-# right_answers.append(word.strip())
-# return right_answers
-
-
-# def menu():
-# print("What do you want to do?")
-# print("  l - learn words")
-# print("  a - add words")
-# print("  r - reset your right answers")
-# print("  q - exit")
-# choice = self.ask_answer("Enter your answer:")
-# if choice in ["L", "l", "learn", "LEARN"]:
-# print("Let's learn!")
-# self.learn()
-# elif choice in ["A", "a", "add", "ADD"]:
-# self.add_word()
-# elif choice in ["q", "quite"]:
-# byes = [
-# "Buy!",
-# "See you!",
-# "See you later!",
-# "Later!",
-# "See you later, aligator!",
-# "Don't forget! With greate power comes great responsibility.",
-# ]
-# print(random.choice(byes))
-# elif choice in ["r", "reset"]:
-# self.reset()
-# print("Your dictionary is successfully reseted!")
-# self.menu()
-# else:
-# self.menu()
-
-
-# def reset():
-# with open("right_answers.txt", "w") as ra:
-# ra.write("")
-
-
-# def add_word():
-# """Check if the entered word is in the dictionary already"""
-# word = input("Enter a word: ").strip()
-# meaning = input("Enter a meaning: ").strip()
-# self.dictionary[word] = meaning
-# self.save()
-# else_word_answer = self.ask_answer("Your word saved! Another word? [y/n]")
-# if else_word_answer.lower() == "yes":
-# self.add_word()
-# elif else_word_answer.lower() == "no":
-# print("Coming back to menu")
-# self.menu()
-
-
-# def learn():
-# words = list(self.dictionary.keys())
-# choice = random.choice(words)
-# while choice in self.right_answers:
-# choice = random.choice(words)
-# print(choice)
-# input("To show answer press ENTER")
-# print(self.dictionary[choice])
-# rightness_answer = self.ask_answer("Was your answer right? [y/n]")
-# if rightness_answer.lower() in "yes":
-# self.right_answers.append(choice)
-# with open("right_answers.txt", "a") as ra:
-# ra.write(choice + "\n")
-# self.learn()
-# elif rightness_answer.lower() == "no":
-# self.learn()
-
-
-# def ask_answer(self, question):
-# answer = input(question + " ").strip()
-# return answer
-
-
-# def read_dict():
-# # нужен относительный расположению скрипта путь
-# train_dictionary_r = open("train_dictionary.txt", "r")
-# train_dictionary_json = train_dictionary_r.readline()
-# train_dictionary = json.loads(train_dictionary_json)
-# train_dictionary_r.close()
-# return train_dictionary
-
-
-# def save():
-# current_dictionary = json.dumps(self.dictionary, ensure_ascii=False)
-# train_dictionary_a = open("train_dictionary.txt", "w")
-# train_dictionary_a.write(current_dictionary)
-# train_dictionary_a.close()
+    print("WELCOME to LearnWords!\n" "To read help use -h or --help options\n")
 
 
 if __name__ == "__main__":

@@ -154,3 +154,5 @@ cython_debug/
 
 right_answers.txt
 train_dictionary.txt
+
+*.sqlite3

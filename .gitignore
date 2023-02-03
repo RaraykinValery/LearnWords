@@ -1,5 +1,2 @@
 __pycache__/
-*.sqlite3
-
-right_answers.txt
-train_dictionary.txt
+db.sqlite3

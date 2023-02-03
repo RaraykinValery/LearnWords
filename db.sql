@@ -1,5 +1,5 @@
 CREATE TABLE dictionary (
-    id INTEGER PRIMARY KEY,
+    id integer PRIMARY KEY,
     primary_text varchar(255) NOT NULL,
     translation varchar(255) NOT NULL
 );

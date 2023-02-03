@@ -1,6 +1,6 @@
 CREATE TABLE dictionary (
     id integer PRIMARY KEY,
-    primary_text varchar(255) NOT NULL,
+    primary_text varchar(255) NOT NULL UNIQUE,
     translation varchar(255) NOT NULL
 );
 

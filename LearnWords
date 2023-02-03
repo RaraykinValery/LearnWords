@@ -23,14 +23,13 @@ def main():
 
 
 def add(args):
-    connection = sqlite3.connect("dictionary.sqlite3")
-    cursor = connection.cursor()
-    cursor.execute(
-        "INSERT INTO dictionary (primary_text, translation) VALUES(?, ?)",
-        [args.text, args.translation],
-    )
-    connection.commit()
-    print(f"Translation is added!")
+    try:
+        with sqlite3.connect("db.sqlite3") as connection:
+            connection.execute("INSERT INTO dictionary (primary_text, translation) VALUES(?, ?)", [args.text, args.translation])
+    except sqlite3.IntegrityError as err:
+        print(f"Couldn't add translation.\nError: {err}")
+    else:
+        print(f"Translation is added!")
 
 
 def learn(args):

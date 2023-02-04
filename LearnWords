@@ -53,10 +53,10 @@ def learn(args):
             primary_text = row[0]
             translation = row[1]
             os.system("clear" if os.name == "posix" else "cls")
-            print(f"\n{primary_text}\n")
+            print(f"{primary_text}\n")
             input(f"{BLUE}Hit Enter to to continue, Ctrl-c to exit{RESET}")
             os.system("clear" if os.name == "posix" else "cls")
-            print(f"\n{GREEN}{translation}{RESET}\n")
+            print(f"{GREEN}{translation}{RESET}\n")
             input(f"{BLUE}Hit Enter to to continue, Ctrl-c to exit{RESET}")
 
 

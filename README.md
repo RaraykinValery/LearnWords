@@ -1,8 +1,8 @@
 # LearnWords
 
-LearnWords is a programm for learning foreign language words and phrases.
+**LearnWords** is a programm for learning foreign language words and phrases.
 
-The programm consists of two functions that can be called from teminal using "add" and "learn" keys.
+The programm consists of two functions that can be called from the terminal using "add" and "learn" parameters.
 
 Next comman will add a word "hello" and it's translation "привет" into your dictionary:\
 ```./LearnWords add hello привет```

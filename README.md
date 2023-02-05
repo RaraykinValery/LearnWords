@@ -2,13 +2,24 @@
 
 **LearnWords** is a programm for learning foreign language words and phrases.
 
+# Installation
+Clone this git repository:\
+```git clone https://github.com/RaraykinValery/LearnWords.git```
+
+You can use the program with absolute path:\
+```./LearnWords```
+
+Or you can add it to PATH and use it everywhere in your system.
+
+# Usage
+
 The programm consists of two functions that can be called from the terminal using "add" and "learn" parameters.
 
 Next comman will add a word "hello" and it's translation "привет" into your dictionary:\
-```./LearnWords add hello привет```
+```LearnWords add hello привет```
 
 When you have added some words and/or phrases into your dictionary you can start to learn:\
-```./LearnWords learn```
+```LearnWords learn```
 
 Next you will see a random word or a phrase from your dictionary:
 ```
@@ -25,5 +36,3 @@ Hit Enter to to continue, Ctrl-c to exit
 ```
 
 You can hit Enter to learn a next word or you can exit hitting Ctrl-c.
-
-

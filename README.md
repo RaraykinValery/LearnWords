@@ -34,4 +34,4 @@ Hitting Enter you will see a translation for the word or phrase to compare what 
 Hit Enter to to continue, Ctrl-c to exit
 ```
 
-You can hit Enter to learn a next word or you can exit hitting Ctrl-c.
+You can hit Enter to learn next word or you can exit hitting Ctrl-c.

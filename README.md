@@ -6,8 +6,7 @@
 Clone this git repository:\
 ```git clone https://github.com/RaraykinValery/LearnWords.git```
 
-You can use the program with absolute path:\
-```./LearnWords```
+You can use the program with absolute path (for example from the project folder the command will be: `./LearnWords`).
 
 Or you can add it to PATH and use it everywhere in your system.
 

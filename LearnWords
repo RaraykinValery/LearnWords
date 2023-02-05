@@ -2,12 +2,10 @@
 import argparse
 import signal
 
-from services import (
+from services import start_learn_loop, handler, greetings
+from database import (
     create_table_if_not_exists,
     insert_text_and_translation_to_db,
-    start_learn_loop,
-    handler,
-    greetings
 )
 
 

@@ -1,4 +1,4 @@
-DB_PATH = "db.sqlite3"
+DB_NAME = "db.sqlite3"
 
 GREEN = "\033[92m"
 BLUE = "\033[94m"

@@ -2,15 +2,6 @@ from database import get_random_text_and_translation
 import urwid
 
 
-def show_help(help_panel, help_win):
-    help_panel.show()
-    while True:
-        key = help_win.getch()
-        if key == ord("h"):
-            help_panel.hide()
-            break
-
-
 def start_learn_loop() -> None:
     def handle(key):
         if key == "q":

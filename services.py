@@ -1,4 +1,5 @@
 from database import get_random_text_and_translation
+from config import HELP_LINES, URWID_PALETTE
 import urwid
 
 
@@ -18,13 +19,10 @@ def start_learn_loop() -> None:
                 frame.contents["body"] = (main_page, None)
                 footer.set_text(get_footer_text("open"))
 
-    text, translation = get_random_text_and_translation()
+    def get_footer_text(action: str) -> tuple[str, str]:
+        return ("footer", "Press h to {action} help".format(action=action))
 
-    palette = [
-        ("text", "dark blue", ""),
-        ("translation", "yellow", ""),
-        ("footer", "light gray", ""),
-    ]
+    text, translation = get_random_text_and_translation()
 
     # Main page with text and translation
     text_widget = urwid.Text(("text", text), "center")
@@ -38,16 +36,9 @@ def start_learn_loop() -> None:
     main_page = urwid.Pile([text_padding, translation_padding])
 
     # Help page
-    help_texts = [
-        "Space - show translation or next text",
-        "d - delete current text and translation from dictionary",
-        "h - open/close help",
-        "q - quit the program",
-    ]
-
     help_pile = urwid.Pile([])
 
-    for txt in help_texts:
+    for txt in HELP_LINES:
         help_pile.contents.append((urwid.Text(txt), help_pile.options()))
 
     help_pile_filler = urwid.Filler(help_pile, top=2, bottom=2)
@@ -67,14 +58,11 @@ def start_learn_loop() -> None:
     )
 
     # Main frame
-    def get_footer_text(action: str) -> tuple[str, str]:
-        return ("footer", "Press h to {action} help".format(action=action))
-
     footer = urwid.Text(get_footer_text("open"), "left")
 
     frame = urwid.Frame(main_page, footer=footer, focus_part="footer")
 
-    loop = urwid.MainLoop(frame, palette, unhandled_input=handle)
+    loop = urwid.MainLoop(frame, URWID_PALETTE, unhandled_input=handle)
     loop.run()
 
 

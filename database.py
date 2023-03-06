@@ -31,12 +31,17 @@ def insert_text_and_translation_to_db(text: str, translation: str) -> None:
         print(f"Couldn't add translation.\nError: {err}")
 
 
-def get_random_text_and_translation() -> tuple[str, str]:
+def get_random_text_and_translation(current_text_id: int | None = None) -> tuple[int, str, str]:
     try:
         with sqlite3.connect(db_path) as connection:
-            row = connection.execute(
-                "SELECT primary_text, translation FROM dictionary ORDER BY RANDOM() LIMIT 1"
-            ).fetchone()
+            if current_text_id:
+                row = connection.execute(
+                    f"SELECT id, primary_text, translation FROM dictionary WHERE id != {current_text_id} ORDER BY RANDOM() LIMIT 1"
+                ).fetchone()
+            else:
+                row = connection.execute(
+                    "SELECT id, primary_text, translation FROM dictionary ORDER BY RANDOM() LIMIT 1"
+                ).fetchone()
     except sqlite3.IntegrityError as err:
         print(f"Couldn't add translation.\nError: {err}")
 

@@ -2,22 +2,32 @@ import sqlite3
 import os
 
 import config
+from exceptions import (
+    CanNotCreateDatabase,
+    CanNotDeleteTextAndTranslation,
+    CanNotAddTextAndTranslation,
+    CanNotGetTextAndTranslation,
+)
 
 
-db_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "db.sqlite3")
+db_path = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), "db.sqlite3")
 
 
 def create_table_if_not_exists() -> None:
-    with sqlite3.connect(db_path) as connection:
-        connection.execute(
-            """
-            CREATE TABLE IF NOT EXISTS dictionary(
-                id integer PRIMARY KEY,
-                primary_text varchar(255) NOT NULL UNIQUE,
-                translation varchar(255) NOT NULL
+    try:
+        with sqlite3.connect(db_path) as connection:
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS dictionary(
+                    id integer PRIMARY KEY,
+                    primary_text varchar(255) NOT NULL UNIQUE,
+                    translation varchar(255) NOT NULL
+                )
+                """
             )
-            """
-        )
+    except Exception:
+        raise CanNotCreateDatabase
 
 
 def insert_text_and_translation_to_db(text: str, translation: str) -> None:
@@ -27,23 +37,34 @@ def insert_text_and_translation_to_db(text: str, translation: str) -> None:
                 "INSERT INTO dictionary (primary_text, translation) VALUES(?, ?)",
                 [text, translation],
             )
-    except sqlite3.IntegrityError as err:
-        print(f"Couldn't add translation.\nError: {err}")
+    except sqlite3.IntegrityError:
+        raise CanNotAddTextAndTranslation
 
 
-def get_random_text_and_translation(current_text_id: int | None = None) -> tuple[int, str, str]:
+def delete_text_and_translation_from_db(id: int) -> None:
+    try:
+        with sqlite3.connect(db_path) as connection:
+            connection.execute("DELETE FROM dictionary WHERE id = ?", str(id))
+    except sqlite3.IntegrityError:
+        raise CanNotDeleteTextAndTranslation
+
+
+def get_random_text_and_translation(
+    current_text_id: int | None = None,
+) -> tuple[int, str, str]:
     try:
         with sqlite3.connect(db_path) as connection:
             if current_text_id:
                 row = connection.execute(
-                    f"SELECT id, primary_text, translation FROM dictionary WHERE id != {current_text_id} ORDER BY RANDOM() LIMIT 1"
+                    f"SELECT id, primary_text, translation FROM dictionary WHERE id != ? ORDER BY RANDOM() LIMIT 1",
+                    str(current_text_id),
                 ).fetchone()
             else:
                 row = connection.execute(
                     "SELECT id, primary_text, translation FROM dictionary ORDER BY RANDOM() LIMIT 1"
                 ).fetchone()
-    except sqlite3.IntegrityError as err:
-        print(f"Couldn't add translation.\nError: {err}")
+    except sqlite3.IntegrityError:
+        raise CanNotGetTextAndTranslation
 
     if row is None:
         print(config.NO_TRANSLATIONS_ERROR)

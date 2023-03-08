@@ -1,13 +1,76 @@
-import os
+import urwid
+import signal
 
-import config
+from config import HELP_LINES, URWID_PALETTE
+from database import (
+    delete_text_and_translation_from_db,
+)
+from custom_widgets import AddTextTranslationForm, TextTranslationWidget
 
 
-def print_element_with_hint(element: str) -> None:
-    print(element)
-    input(config.HINT_STRING)
-    clear_screen()
+def handle_input(key):
+    if key == " ":
+        if frame.contents["body"][0] == main_page:
+            text_translation_widget.show_next()
+    if key == "h":
+        if frame.contents["body"][0] != help_page:
+            frame.contents["body"] = (help_page, None)
+            footer.set_text("")
+    if key == "d":
+        if frame.contents["body"][0] == main_page:
+            try:
+                delete_text_and_translation_from_db(
+                    text_translation_widget.text_id)
+            except Exception as err:
+                header.set_text(str(err))
+            else:
+                text_translation_widget.show_new_text()
+    if key == "a":
+        if frame.contents["body"][0] != add_text_page:
+            frame.contents["body"] = (add_text_page, None)
+            footer.set_text(("footer", "Press esc to close add page"))
+    if key == "esc":
+        if frame.contents["body"][0] != main_page:
+            frame.contents["body"] = (main_page, None)
+            footer.set_text(("footer", "Press h to open help"))
 
 
-def clear_screen() -> None:
-    os.system("clear" if os.name == "posix" else "cls")
+def handle_sigint(sig, frame):
+    raise urwid.ExitMainLoop()
+
+
+signal.signal(signal.SIGINT, handle_sigint)
+
+# Main page with text and translation
+text_translation_widget = TextTranslationWidget()
+main_page = urwid.Filler(text_translation_widget)
+
+# Help page
+help_pile = urwid.Pile([])
+
+for txt in HELP_LINES:
+    help_pile.contents.append(
+        (
+            urwid.Text(txt + "\n"),
+            help_pile.options(),
+        )
+    )
+
+help_page = urwid.Filler(
+    urwid.Padding(help_pile, align="center", width=("relative", 60))
+)
+
+# Add text page
+add_text_translation_form = AddTextTranslationForm()
+add_text_page = urwid.Filler(
+    urwid.Padding(add_text_translation_form, width=(
+        "relative", 50), align="center")
+)
+
+# Main frame
+header = urwid.Text("", "left")
+footer = urwid.Text(("footer", "Press h to open help"))
+
+frame = urwid.Frame(main_page, footer=footer, header=header)
+
+urwid_loop = urwid.MainLoop(frame, URWID_PALETTE, unhandled_input=handle_input)

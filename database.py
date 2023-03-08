@@ -44,7 +44,8 @@ def insert_text_and_translation_to_db(text: str, translation: str) -> None:
 def delete_text_and_translation_from_db(id: int) -> None:
     try:
         with sqlite3.connect(db_path) as connection:
-            connection.execute("DELETE FROM dictionary WHERE id = ?", str(id))
+            params = (id,)
+            connection.execute("DELETE FROM dictionary WHERE id = ?", params)
     except sqlite3.IntegrityError:
         raise CanNotDeleteTextAndTranslation
 
@@ -55,9 +56,10 @@ def get_random_text_and_translation(
     try:
         with sqlite3.connect(db_path) as connection:
             if current_text_id:
+                params = (current_text_id,)
                 row = connection.execute(
-                    f"SELECT id, primary_text, translation FROM dictionary WHERE id != ? ORDER BY RANDOM() LIMIT 1",
-                    str(current_text_id),
+                    "SELECT id, primary_text, translation FROM dictionary WHERE id != ? ORDER BY RANDOM() LIMIT 1",
+                    params
                 ).fetchone()
             else:
                 row = connection.execute(

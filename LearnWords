@@ -9,7 +9,7 @@ from database import (
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="LearnWords is an app to help you learn the meanings of words and phrases!"
+        description="LearnWords is a programm for learning foreign language words and phrases"
     )
     subparsers = parser.add_subparsers()
     parser.set_defaults(func=greetings)

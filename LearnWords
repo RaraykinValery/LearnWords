@@ -3,14 +3,11 @@ import argparse
 
 from services import start_learn_loop, greetings
 from database import (
-    create_table_if_not_exists,
     insert_text_and_translation_to_db,
 )
 
 
 def main() -> None:
-    create_table_if_not_exists()
-
     parser = argparse.ArgumentParser(
         description="LearnWords is an app to help you learn the meanings of words and phrases!"
     )

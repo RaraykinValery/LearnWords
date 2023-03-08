@@ -40,7 +40,8 @@ class AddTextTranslationForm(urwid.Pile):
                 self.information_field.set_text(
                     (
                         "error",
-                        "To save, you need to fill in both the text and translation fields",
+                        "To save, you need to fill in both "
+                        "the text and translation fields",
                     )
                 )
             else:

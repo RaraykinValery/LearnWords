@@ -6,32 +6,20 @@
 Clone this git repository:\
 ```git clone https://github.com/RaraykinValery/LearnWords.git```
 
-You can use the program with absolute path (for example from the project folder the command will be: `./LearnWords`).
+You can use the program with an absolute path. For example, from the project folder, the command will be: `./LearnWords`
 
-Or you can add it to PATH and use it everywhere in your system.
+Alternatively, you can add it to PATH and use it everywhere in your system.
 
 # Usage
 
-The programm consists of two functions that can be called from the terminal using "add" and "learn" parameters.
+The program consists of two functions that can be called from the terminal using the "add" and "learn" parameters.
 
-Next comman will add a word "hello" and it's translation "привет" into your dictionary:\
+To add a word "hello" and its translation "привет" to your dictionary, use the following command:\
 ```LearnWords add hello привет```
 
-When you have added some words and/or phrases into your dictionary you can start to learn:\
+Once you have added some words and/or phrases to your dictionary, you can start learning:\
 ```LearnWords learn```
 
-Next you will see a random word or a phrase from your dictionary:
-```
-hello
+After running the `LearnWords learn` command, you will see an interface displaying a random word or phrase from your dictionary. Press the "space" key to reveal its translation. If you press the "space" key again, the next random word will appear.
 
-Hit Enter to to continue, Ctrl-c to exit
-```
-
-Hitting Enter you will see a translation for the word or phrase to compare what you remember with the right answer:
-```
-привет
-
-Hit Enter to to continue, Ctrl-c to exit
-```
-
-You can hit Enter to learn next word or you can exit hitting Ctrl-c.
+Pressing "a" will allow you to open a form for adding a new word and translation to your dictionary as well.

@@ -1,83 +1,49 @@
 import urwid
+import signal
 
 from config import HELP_LINES, URWID_PALETTE
 from database import (
     delete_text_and_translation_from_db,
-    get_random_text_and_translation,
 )
+from custom_widgets import AddTextTranslationForm, TextTranslationWidget
 
 
 def handle_input(key):
-    if key == "q":
-        raise urwid.ExitMainLoop()
     if key == " ":
         if frame.contents["body"][0] == main_page:
-            main_page.show_next()
+            text_translation_widget.show_next()
     if key == "h":
         if frame.contents["body"][0] != help_page:
             frame.contents["body"] = (help_page, None)
-            footer.set_text(get_footer_text("close"))
-        else:
-            frame.contents["body"] = (main_page, None)
-            footer.set_text(get_footer_text("open"))
+            footer.set_text("")
     if key == "d":
         if frame.contents["body"][0] == main_page:
             try:
-                delete_text_and_translation_from_db(main_page.text_id)
+                delete_text_and_translation_from_db(
+                    text_translation_widget.text_id)
             except Exception as err:
                 header.set_text(str(err))
+            else:
+                text_translation_widget.show_new_text()
+    if key == "a":
+        if frame.contents["body"][0] != add_text_page:
+            frame.contents["body"] = (add_text_page, None)
+            footer.set_text(("footer", "Press esc to close add page"))
+    if key == "esc":
+        if frame.contents["body"][0] != main_page:
+            frame.contents["body"] = (main_page, None)
+            footer.set_text(("footer", "Press h to open help"))
 
 
+def handle_sigint(sig, frame):
+    raise urwid.ExitMainLoop()
 
-def get_footer_text(action: str) -> tuple[str, str]:
-    return ("footer", "Press h to {action} help".format(action=action))
 
+signal.signal(signal.SIGINT, handle_sigint)
 
 # Main page with text and translation
-class TextTranslationWidget(urwid.Filler):
-    def __init__(self) -> None:
-        self.text_id: int = 1
-        self.text: str
-        self.translation: str
-
-        self.translation_showed = False
-
-        self.text_widget = urwid.Text(("text", ""), align="center")
-        self.translation_widget = urwid.Text(
-            ("translation", ""), align="center")
-
-        self._set_text_translation()
-        self._show_text(self.text)
-
-        super().__init__(
-            urwid.Pile([self.text_widget, urwid.Divider(),
-                       self.translation_widget])
-        )
-
-    def _set_text_translation(self) -> None:
-            self.text_id, self.text, self.translation = get_random_text_and_translation(
-                self.text_id
-            )
-
-    def _show_text(self, text: str) -> None:
-        self.text_widget.set_text(("text", text))
-
-    def _show_translation(self, translation: str) -> None:
-        self.translation_widget.set_text(("translation", translation))
-
-    def show_next(self) -> None:
-        if self.translation_showed:
-            self.text_widget.set_text(("text", ""))
-            self.translation_widget.set_text(("translation", ""))
-            self._set_text_translation()
-            self._show_text(self.text)
-            self.translation_showed = False
-        else:
-            self._show_translation(self.translation)
-            self.translation_showed = True
-
-
-main_page = TextTranslationWidget()
+text_translation_widget = TextTranslationWidget()
+main_page = urwid.Filler(text_translation_widget)
 
 # Help page
 help_pile = urwid.Pile([])
@@ -85,28 +51,25 @@ help_pile = urwid.Pile([])
 for txt in HELP_LINES:
     help_pile.contents.append(
         (
-            urwid.Text(txt),
+            urwid.Text(txt + "\n"),
             help_pile.options(),
         )
     )
 
-help_pile_filler = urwid.Filler(urwid.Padding(help_pile, "center", "pack"))
-help_pile_filler_padding = help_pile_filler
+help_page = urwid.Filler(
+    urwid.Padding(help_pile, align="center", width=("relative", 60))
+)
 
-overlay_bottom_w = urwid.SolidFill()
-
-help_page = urwid.Overlay(
-    top_w=help_pile_filler_padding,
-    bottom_w=overlay_bottom_w,
-    align="center",
-    valign="middle",
-    height=("relative", 30),
-    width=("relative", 70),
+# Add text page
+add_text_translation_form = AddTextTranslationForm()
+add_text_page = urwid.Filler(
+    urwid.Padding(add_text_translation_form, width=(
+        "relative", 50), align="center")
 )
 
 # Main frame
 header = urwid.Text("", "left")
-footer = urwid.Text(get_footer_text("open"), "left")
+footer = urwid.Text(("footer", "Press h to open help"))
 
 frame = urwid.Frame(main_page, footer=footer, header=header)
 

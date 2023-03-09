@@ -1,3 +1,5 @@
+![learn_words2](https://user-images.githubusercontent.com/32908993/223927173-cb9d2d50-ccc8-43bc-8852-19ee51de61c8.gif)
+
 # LearnWords
 
 **LearnWords** is a programm for learning foreign language words and phrases.

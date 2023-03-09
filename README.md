@@ -11,11 +11,11 @@ Clone this git repository:\
 Install requirements:\
 ```pip install -r requirements.txt```
 
+# Usage
+
 You can use the program with an absolute path. For example, from the project folder, the command will be: `./LearnWords`
 
 Alternatively, you can add it to PATH and use it everywhere in your system.
-
-# Usage
 
 The program consists of two functions that can be called from the terminal using the "add" and "learn" parameters.
 

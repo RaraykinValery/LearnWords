@@ -33,5 +33,5 @@ Pressing "a" will allow you to open a form for adding a new word and translation
 
 To use LearnWords, you will need:
 
-- Python 3
+- Python 3.10
 - Urwid

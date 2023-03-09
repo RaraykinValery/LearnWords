@@ -1,5 +1,7 @@
 DB_NAME = "db.sqlite3"
 
+GREETINGS_MESSAGE = "WELCOME to LearnWords!\nTo read help use -h or --help options\n"
+
 NO_UNITS_ERROR = (
     "No translations have been added to your dictionary.\n"
     "To add one, press 'a' or use 'LearnWords add' command."

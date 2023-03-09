@@ -1,7 +1,6 @@
 import urwid
-import signal
 
-from config import HELP_LINES, URWID_PALETTE
+import config
 from database import (
     delete_text_and_translation_from_db,
 )
@@ -32,12 +31,6 @@ def handle_input(key):
             footer.set_text(("footer", "Press h to open help"))
 
 
-def handle_sigint(sig, frame):
-    raise urwid.ExitMainLoop()
-
-
-signal.signal(signal.SIGINT, handle_sigint)
-
 # Main page with text and translation
 text_translation_widget = TextTranslationWidget()
 main_page = urwid.Filler(text_translation_widget)
@@ -45,7 +38,7 @@ main_page = urwid.Filler(text_translation_widget)
 # Help page
 help_pile = urwid.Pile([])
 
-for txt in HELP_LINES:
+for txt in config.HELP_LINES:
     help_pile.contents.append(
         (
             urwid.Text(txt + "\n"),
@@ -70,4 +63,4 @@ footer = urwid.Text(("footer", "Press h to open help"))
 
 frame = urwid.Frame(main_page, footer=footer, header=header)
 
-urwid_loop = urwid.MainLoop(frame, URWID_PALETTE, unhandled_input=handle_input)
+urwid_loop = urwid.MainLoop(frame, config.URWID_PALETTE, unhandled_input=handle_input)

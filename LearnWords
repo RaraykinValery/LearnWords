@@ -25,7 +25,6 @@ def add(args: argparse.Namespace) -> None:
     from database import insert_text_and_translation_to_db
 
     insert_text_and_translation_to_db(args.text, args.translation)
-    print(f"Translation is added!")
 
 
 def learn(args: argparse.Namespace) -> None:

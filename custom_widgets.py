@@ -34,30 +34,10 @@ class AddTextTranslationForm(urwid.Pile):
 
     def keypress(self, size, key):
         if key == "tab":
-            if super().get_focus() == self.text_edit_lined:
-                super().set_focus(self.translation_edit_lined)
-            else:
-                super().set_focus(self.text_edit_lined)
+            self._toggle_focus()
         if key == "enter":
-            if (
-                self.text_edit.text.strip() == ""
-                or self.translation_edit.text.strip() == ""
-            ):
-                self.information_field.set_text(
-                    (
-                        "error",
-                        "To save, you need to fill in both "
-                        "the text and translation fields",
-                    )
-                )
-            else:
-                text = self.text_edit.text.strip()
-                translation = self.translation_edit.text.strip()
-                insert_text_and_translation_to_db(text, translation)
-                self.information_field.set_text(
-                    ("success", "Saved successfully!"))
-                self._clear_text_widgets()
-                super().set_focus(self.text_edit_lined)
+            self._add_unit_to_dictionary()
+            return super().keypress(size, key)
         if key == "esc":
             self._clear_text_widgets()
             self.information_field.set_text("")
@@ -68,6 +48,29 @@ class AddTextTranslationForm(urwid.Pile):
     def _clear_text_widgets(self) -> None:
         self.text_edit.set_edit_text("")
         self.translation_edit.set_edit_text("")
+
+    def _toggle_focus(self) -> None:
+        if super().get_focus() == self.text_edit_lined:
+            super().set_focus(self.translation_edit_lined)
+        else:
+            super().set_focus(self.text_edit_lined)
+
+    def _add_unit_to_dictionary(self) -> None:
+        if (
+            self.text_edit.text.strip() == ""
+            or self.translation_edit.text.strip() == ""
+        ):
+            self.information_field.set_text(
+                ("error", config.EMPTY_REQUIRED_FIELDS_ERROR)
+            )
+        else:
+            text = self.text_edit.text.strip()
+            translation = self.translation_edit.text.strip()
+            insert_text_and_translation_to_db(text, translation)
+            self.information_field.set_text(
+                ("success", config.SAVING_SUCCESS_MESSAGE))
+            self._clear_text_widgets()
+            super().set_focus(self.text_edit_lined)
 
 
 class TextTranslationWidget(urwid.Pile):

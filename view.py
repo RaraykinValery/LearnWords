@@ -25,6 +25,11 @@ def handle_input(key):
         if frame.contents["body"][0] != add_text_page:
             frame.contents["body"] = (add_text_page, None)
             footer.set_text(("footer", "Press esc to close add page"))
+    if key == "enter":
+        if frame.contents["body"][0] == add_text_page:
+            id = text_translation_widget.get_current_unit_id()
+            if not id:
+                text_translation_widget.show_next()
     if key == "esc":
         if frame.contents["body"][0] != main_page:
             frame.contents["body"] = (main_page, None)

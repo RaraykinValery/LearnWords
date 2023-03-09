@@ -8,6 +8,9 @@
 Clone this git repository:\
 ```git clone https://github.com/RaraykinValery/LearnWords.git```
 
+Install requirements:\
+```pip install -r requirements.txt```
+
 You can use the program with an absolute path. For example, from the project folder, the command will be: `./LearnWords`
 
 Alternatively, you can add it to PATH and use it everywhere in your system.
@@ -18,9 +21,6 @@ The program consists of two functions that can be called from the terminal using
 
 To add a word "hello" and its translation "привет" to your dictionary, use the following command:\
 ```LearnWords add hello привет```
-
-Install requirements:\
-```pip install -r requirements.txt```
 
 Once you have added some words and/or phrases to your dictionary, you can start learning:\
 ```LearnWords learn```

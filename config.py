@@ -8,18 +8,19 @@ NO_UNITS_ERROR = (
 )
 
 HELP_LINES = (
-    "Space - show translation or next text",
-    "d - delete current text and translation from dictionary",
-    "esc - back to main page",
-    "a - open form for adding new text and translation",
-    "Enter (in add page) - save text and translation to dictionary",
-    "h - open help",
-    "ctrl-c - quit the program",
+    ("a", "open form for adding new text and translation"),
+    ("d", "delete current text and translation from dictionary"),
+    ("h", "open help"),
+    ("Space", "show translation or next text"),
+    ("Enter", "save text and translation to dictionary (in add page)"),
+    ("esc", "back to main page"),
+    ("ctrl-c", "quit the program"),
 )
 
 URWID_PALETTE = (
     ("text", "dark blue", ""),
     ("translation", "yellow", ""),
+    ("keybinding", "dark cyan", ""),
     ("footer", "light gray", ""),
     ("error", "dark red", ""),
     ("success", "dark green", ""),

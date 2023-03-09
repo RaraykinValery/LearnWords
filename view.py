@@ -42,17 +42,19 @@ main_page = urwid.Filler(text_translation_widget)
 
 # Help page
 help_pile = urwid.Pile([])
+main_pile = urwid.Pile([])
 
-for txt in config.HELP_LINES:
-    help_pile.contents.append(
-        (
-            urwid.Text(txt + "\n"),
-            help_pile.options(),
-        )
-    )
+for binding in config.HELP_LINES:
+    key = urwid.Text(("keybinding", binding[0]), "right")
+    descr = urwid.Text(("", binding[1]))
+    column = urwid.Columns(
+        [("weight", 1, key), ("weight", 3, descr)], dividechars=3)
+    main_pile.contents.append((column, main_pile.options()))
+    main_pile.contents.append((urwid.Divider(), main_pile.options()))
 
 help_page = urwid.Filler(
-    urwid.Padding(help_pile, align="center", width=("relative", 60))
+    urwid.Padding(main_pile, width=("relative", 60),
+                  align="center", min_width=70)
 )
 
 # Add text page
@@ -68,4 +70,5 @@ footer = urwid.Text(("footer", "Press h to open help"))
 
 frame = urwid.Frame(main_page, footer=footer, header=header)
 
-urwid_loop = urwid.MainLoop(frame, config.URWID_PALETTE, unhandled_input=handle_input)
+urwid_loop = urwid.MainLoop(
+    frame, config.URWID_PALETTE, unhandled_input=handle_input)

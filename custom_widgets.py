@@ -1,6 +1,12 @@
 import urwid
 
-from database import get_random_text_and_translation, insert_text_and_translation_to_db
+from database import (
+    get_random_text_and_translation,
+    insert_text_and_translation_to_db,
+    DictUnit,
+)
+from exceptions import NoUnitsInDictionary
+import config
 
 
 class AddTextTranslationForm(urwid.Pile):
@@ -50,57 +56,75 @@ class AddTextTranslationForm(urwid.Pile):
                 insert_text_and_translation_to_db(text, translation)
                 self.information_field.set_text(
                     ("success", "Saved successfully!"))
-                self.text_edit.set_edit_text("")
-                self.translation_edit.set_edit_text("")
+                self._clear_text_widgets()
                 super().set_focus(self.text_edit_lined)
+        if key == "esc":
+            self._clear_text_widgets()
+            self.information_field.set_text("")
+            return super().keypress(size, key)
         else:
             return super().keypress(size, key)
+
+    def _clear_text_widgets(self) -> None:
+        self.text_edit.set_edit_text("")
+        self.translation_edit.set_edit_text("")
 
 
 class TextTranslationWidget(urwid.Pile):
     def __init__(self) -> None:
-        self.text_id: int
-        self.text: str
-        self.translation: str
+        self._current_dict_unit: DictUnit | None = None
 
-        self.text_widget = urwid.Text(("text", ""), align="center")
-        self.translation_widget = urwid.Text(
+        self._text_widget = urwid.Text(("text", ""), align="center")
+        self._translation_widget = urwid.Text(
             ("translation", ""), align="center")
 
-        self._translation_showed = False
+        self._show_new_unit = True
+        self._need_init_unit = True
 
-        self._set_text_translation()
-        self._show_text(self.text)
+        self.show_next()
 
         super().__init__(
-            [self.text_widget, urwid.Divider(), self.translation_widget])
+            [self._text_widget, urwid.Divider(), self._translation_widget])
 
-    def _set_text_translation(self, id=None) -> None:
-        self.text_id, self.text, self.translation = get_random_text_and_translation(
-            id)
+    def _set_unit(self) -> None:
+        self._current_dict_unit = get_random_text_and_translation(
+            self._current_dict_unit
+        )
 
-    def _show_text(self, text: str) -> None:
-        self.text_widget.set_text(("text", text))
+    def _show_text(self, text: str, attr: str = "text") -> None:
+        self._text_widget.set_text((attr, text))
 
-    def _show_translation(self, translation: str) -> None:
-        self.translation_widget.set_text(("translation", translation))
+    def _show_translation(self, translation: str, attr: str = "translation") -> None:
+        self._translation_widget.set_text((attr, translation))
 
-    def _clear_widgets_text(self):
-        self.text_widget.set_text(("text", ""))
-        self.translation_widget.set_text(("translation", ""))
+    def _clear_widgets_text(self) -> None:
+        self._text_widget.set_text(("text", ""))
+        self._translation_widget.set_text(("translation", ""))
+
+    def get_current_unit_id(self) -> int | None:
+        if self._current_dict_unit:
+            return self._current_dict_unit.id
+        else:
+            return None
 
     def show_next(self) -> None:
-        if self._translation_showed:
-            self._set_text_translation(self.text_id)
+        if self._show_new_unit:
             self._clear_widgets_text()
-            self._show_text(self.text)
-            self._translation_showed = False
+            try:
+                self._set_unit()
+            except NoUnitsInDictionary:
+                self._show_text(config.NO_UNITS_ERROR, "")
+                self._show_new_unit = True
+            else:
+                self._show_text(self._current_dict_unit.text)
+                self._show_new_unit = False
+                if self._need_init_unit:
+                    self._need_init_unit = False
         else:
-            self._show_translation(self.translation)
-            self._translation_showed = True
+            self._show_translation(self._current_dict_unit.translation)
+            self._show_new_unit = True
 
-    def show_new_text(self) -> None:
-        self._set_text_translation()
-        self._clear_widgets_text()
-        self._show_text(self.text)
-        self._translation_showed = False
+    def show_new_unit(self) -> None:
+        self._show_new_unit = True
+        self._current_dict_unit = None
+        self.show_next()

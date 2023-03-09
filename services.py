@@ -5,5 +5,5 @@ def start_learn_loop() -> None:
     urwid_loop.run()
 
 
-def greetings(args) -> None:
+def greetings() -> None:
     print("WELCOME to LearnWords!\n" "To read help use -h or --help options\n")

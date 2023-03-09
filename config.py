@@ -1,8 +1,8 @@
 DB_NAME = "db.sqlite3"
 
-NO_TRANSLATIONS_ERROR = (
-    "You have no translations added to your dictionary.\n"
-    "Use add parameter to add one."
+NO_UNITS_ERROR = (
+    "No translations have been added to your dictionary.\n"
+    "To add one, press 'a' or use 'LearnWords add' command."
 )
 
 

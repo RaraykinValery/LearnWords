@@ -18,13 +18,10 @@ def handle_input(key):
             footer.set_text("")
     if key == "d":
         if frame.contents["body"][0] == main_page:
-            try:
-                delete_text_and_translation_from_db(
-                    text_translation_widget.text_id)
-            except Exception as err:
-                header.set_text(str(err))
-            else:
-                text_translation_widget.show_new_text()
+            id = text_translation_widget.get_current_unit_id()
+            if id:
+                delete_text_and_translation_from_db(id)
+                text_translation_widget.show_new_unit()
     if key == "a":
         if frame.contents["body"][0] != add_text_page:
             frame.contents["body"] = (add_text_page, None)

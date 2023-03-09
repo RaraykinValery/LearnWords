@@ -1,4 +1,4 @@
-![learn_words](https://user-images.githubusercontent.com/32908993/223925296-d48eb7eb-1a8a-4b22-9dc1-23de032485cd.gif)
+![learn_words2](https://user-images.githubusercontent.com/32908993/223927173-cb9d2d50-ccc8-43bc-8852-19ee51de61c8.gif)
 
 # LearnWords
 

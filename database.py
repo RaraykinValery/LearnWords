@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 
 from exceptions import NoUnitsInDictionary
 
@@ -32,7 +32,7 @@ def delete_text_and_translation_from_db(id: int) -> None:
     conn.commit()
 
 
-def get_random_text_and_translation(current_dict_unit: DictUnit | None) -> DictUnit:
+def get_random_text_and_translation(current_dict_unit: Optional[DictUnit]) -> DictUnit:
     num_rows = cursor.execute("SELECT COUNT(*) FROM dictionary").fetchone()[0]
 
     if num_rows == 0:

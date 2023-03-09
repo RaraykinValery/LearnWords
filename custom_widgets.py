@@ -1,3 +1,4 @@
+from typing import Optional
 import urwid
 
 from database import (
@@ -75,7 +76,7 @@ class AddTextTranslationForm(urwid.Pile):
 
 class TextTranslationWidget(urwid.Pile):
     def __init__(self) -> None:
-        self._current_dict_unit: DictUnit | None = None
+        self._current_dict_unit: Optional[DictUnit] = None
 
         self._text_widget = urwid.Text(("text", ""), align="center")
         self._translation_widget = urwid.Text(
@@ -104,7 +105,7 @@ class TextTranslationWidget(urwid.Pile):
         self._text_widget.set_text(("text", ""))
         self._translation_widget.set_text(("translation", ""))
 
-    def get_current_unit_id(self) -> int | None:
+    def get_current_unit_id(self) -> Optional[int]:
         if self._current_dict_unit:
             return self._current_dict_unit.id
         else:

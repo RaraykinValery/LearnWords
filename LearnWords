@@ -24,6 +24,7 @@ def main() -> None:
 def add(args: argparse.Namespace) -> None:
     from database import insert_text_and_translation_to_db
 
+    # TODO: make another layer that implements add_dictionary_unit()
     insert_text_and_translation_to_db(args.text, args.translation)
 
 

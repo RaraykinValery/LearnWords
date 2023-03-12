@@ -1,0 +1,2 @@
+from custom_widgets.add_text_translation_form import AddTextTranslationForm
+from custom_widgets.text_translation_widget import TextTranslationWidget

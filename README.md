@@ -8,6 +8,9 @@
 Clone this git repository:\
 ```git clone https://github.com/RaraykinValery/LearnWords.git```
 
+Change to the project directory:\
+```cd LearnWords```
+
 Install requirements:\
 ```pip install -r requirements.txt```
 

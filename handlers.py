@@ -23,7 +23,8 @@ def handle_input_keys(key):
             if pages.frame.contents["body"][0] != pages.add_text_page:
                 pages.frame.contents["body"] = (pages.add_text_page, None)
                 pages.footer.set_text(
-                    ("footer", "Press esc to close add page"))
+                    ("footer", "Press esc to close add page")
+                )
         case "enter":
             if pages.frame.contents["body"][0] == pages.add_text_page:
                 id = pages.text_translation_widget.get_current_unit_id()

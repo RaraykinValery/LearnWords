@@ -5,8 +5,9 @@ from typing import NamedTuple
 from exceptions import NoUnitsInDictionary
 
 
-db_path = os.path.join(os.path.dirname(
-    os.path.realpath(__file__)), "db.sqlite3")
+db_path = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), "db.sqlite3"
+)
 
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
@@ -21,7 +22,8 @@ class DictUnit(NamedTuple):
 def insert_text_and_translation_to_db(text: str, translation: str) -> None:
     params = (text, translation)
     cursor.execute(
-        "INSERT INTO dictionary (primary_text, translation) VALUES(?, ?)", params
+        "INSERT INTO dictionary (primary_text, translation) VALUES(?, ?)",
+        params,
     )
     conn.commit()
 
@@ -32,7 +34,9 @@ def delete_text_and_translation_from_db(id: int) -> None:
     conn.commit()
 
 
-def get_random_text_and_translation(current_dict_unit: DictUnit | None) -> DictUnit:
+def get_random_text_and_translation(
+    current_dict_unit: DictUnit | None,
+) -> DictUnit:
     num_rows = cursor.execute("SELECT COUNT(*) FROM dictionary").fetchone()[0]
 
     if num_rows == 0:
@@ -70,7 +74,8 @@ def _init_db() -> None:
 
 def check_db_exists() -> None:
     cursor.execute(
-        "SELECT name FROM sqlite_master " "WHERE type='table' AND name='dictionary'"
+        "SELECT name FROM sqlite_master "
+        "WHERE type='table' AND name='dictionary'"
     )
     table_exists = cursor.fetchall()
     if table_exists:

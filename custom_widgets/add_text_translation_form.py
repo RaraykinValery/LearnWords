@@ -14,7 +14,9 @@ class AddTextTranslationForm(urwid.Pile):
         )
         self.__translation_edit = urwid.Edit()
         self.__translation_edit_lined = urwid.LineBox(
-            self.__translation_edit, title="Translation", title_attr="translation"
+            self.__translation_edit,
+            title="Translation",
+            title_attr="translation",
         )
         self.__information_field = urwid.Text("", "center")
         self.__blank = urwid.Divider()

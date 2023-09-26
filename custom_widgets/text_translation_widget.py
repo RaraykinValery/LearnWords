@@ -14,7 +14,8 @@ class TextTranslationWidget(urwid.Pile):
 
         self.__text_widget = urwid.Text(("text", ""), align="center")
         self.__translation_widget = urwid.Text(
-            ("translation", ""), align="center")
+            ("translation", ""), align="center"
+        )
 
         self.__show_new_unit = True
         self.__need_init_unit = True
@@ -33,7 +34,9 @@ class TextTranslationWidget(urwid.Pile):
     def __show_text(self, text: str, attr: str = "text") -> None:
         self.__text_widget.set_text((attr, text))
 
-    def __show_translation(self, translation: str, attr: str = "translation") -> None:
+    def __show_translation(
+        self, translation: str, attr: str = "translation"
+    ) -> None:
         self.__translation_widget.set_text((attr, translation))
 
     def __clear_widgets_text(self) -> None:

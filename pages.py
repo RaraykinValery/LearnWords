@@ -15,20 +15,23 @@ for binding in config.HELP_LINES:
     key = urwid.Text(("keybinding", binding[0]))
     descr = urwid.Text(("", binding[1]))
     column = urwid.Columns(
-        [("weight", 1, key), ("weight", 5, descr)], dividechars=3)
+        [("weight", 1, key), ("weight", 5, descr)], dividechars=3
+    )
     main_pile.contents.append((column, main_pile.options()))
     main_pile.contents.append((urwid.Divider(), main_pile.options()))
 
 help_page = urwid.Filler(
-    urwid.Padding(main_pile, width=("relative", 40),
-                  align="center", min_width=50)
+    urwid.Padding(
+        main_pile, width=("relative", 40), align="center", min_width=50
+    )
 )
 
 # Add text page
 add_text_translation_form = custom_widgets.AddTextTranslationForm()
 add_text_page = urwid.Filler(
-    urwid.Padding(add_text_translation_form, width=(
-        "relative", 50), align="center")
+    urwid.Padding(
+        add_text_translation_form, width=("relative", 50), align="center"
+    )
 )
 
 # Main frame
